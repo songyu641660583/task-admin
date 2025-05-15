@@ -6,12 +6,12 @@
             :params="params"
             :on-submit="onSearch"
             :btn-loading="loading"
-        />
+        /> 
 
         <!-- 表格区域 -->
         <div class="table-body">
             <!-- 左上角按钮 -->
-            <div class="table-left-top">
+            <!-- <div class="table-left-top">
                 <el-button
                     v-auth="'add'"
                     type="primary"
@@ -25,7 +25,7 @@
                     @click="handleDownload"
                     >{{ $i18n.t("EXPORT") }}</el-button
                 >
-            </div>
+            </div> -->
 
             <!-- 表格 -->
             <el-table
@@ -153,7 +153,7 @@
                     <template slot-scope="scope">
                         <span v-auth="'edit'">
                             <el-link
-                                icon="el-icon-edit"
+                                icon="el-icon-check"
                                 @click="onPass(scope.row)"
                                 >{{ $i18n.t("PASS") }}</el-link
                             >
@@ -161,7 +161,7 @@
                         <span v-auth="'edit'">
                             <el-divider direction="vertical"></el-divider>
                             <el-link
-                                icon="el-icon-edit"
+                                icon="el-icon-close"
                                 @click="onUnpass(scope.row)"
                                 >{{ $i18n.t("UNPASS") }}</el-link
                             >
@@ -308,21 +308,23 @@ export default {
                 { label: this.$i18n.t("NORMAL"), value: 1 },
                 { label: this.$i18n.t("DISABLED"), value: 0 },
             ];
-            // 用户类型
-            const typeOptions = [
-                { label: this.$i18n.t("USER_TYPE_0"), value: 0 },
-                { label: this.$i18n.t("USER_TYPE_1"), value: 1 },
-            ];
+            
             const userLevel = [
                 { label: this.$i18n.t("USER_LEVEL_0"), value: "" },
                 { label: this.$i18n.t("USER_LEVEL_1"), value: 1 },
                 { label: this.$i18n.t("USER_LEVEL_2"), value: 2 },
                 { label: this.$i18n.t("USER_LEVEL_3"), value: 3 },
             ];
+             const verifyStatus = [
+                { label: this.$i18n.t("VERIFY_STATUS_1"), value: 1 },
+                { label: this.$i18n.t("VERIFY_STATUS_2"), value: 2 },
+                { label: this.$i18n.t("VERIFY_STATUS_3"), value: 3 },
+                { label: this.$i18n.t("VERIFY_STATUS_4"), value: 4 },
+            ];
             // 构建搜索表单
             return [
                 {
-                    title: this.$i18n.t("REVIEW_ID"),
+                    title: this.$i18n.t("MEMBER_ID"),
                     type: "input",
                     key: "id",
                     maxlength: 11,
@@ -333,24 +335,18 @@ export default {
                     key: "user_level",
                     options: userLevel,
                 },
-                {
-                    title: this.$i18n.t("USER_TYPE"),
+                 {
+                    title: this.$i18n.t("VERIFY_STATUS"),
                     type: "select",
-                    key: "type",
-                    maxlength: 11,
-                    options: typeOptions,
+                    key: "verify_status",
+                    options: verifyStatus,
                 },
+              
                 {
                     title: this.$i18n.t("MEMBER_LEVEL"),
                     type: "select_level",
                     key: "level",
                     options: this.userLevelList,
-                },
-                {
-                    title: this.$i18n.t("ACCOUNT"),
-                    type: "input",
-                    key: "account",
-                    maxlength: 50,
                 },
                 {
                     title: this.$i18n.t("NICKNAME"),
@@ -459,7 +455,13 @@ export default {
         onPass(row) {
             this.loading = true;
             verifyPass(row.id)
-                .then((res) => {})
+                .then((res) => {
+                    this.page.currentPage = 1
+                   this.$Message.success(this.$i18n.t('HANDLE_SUCCESS'))
+                    setTimeout(() => {
+                        this.fetch()
+                    }, 500)
+                })
                 .finally(() => {
                     this.loading = false;
                 });
@@ -467,7 +469,13 @@ export default {
         onUnpass(row) {
             this.loading = true;
             verifyRefuse(row.id)
-                .then((res) => {})
+                .then((res) => {
+                   this.$Message.success(this.$i18n.t('HANDLE_SUCCESS'))
+                    setTimeout(() => {
+                        this.page.currentPage = 1
+                        this.fetch()
+                    }, 500)
+                })
                 .finally(() => {
                     this.loading = false;
                 });

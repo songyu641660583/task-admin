@@ -556,7 +556,9 @@ export default {
     IDCARDFRONT: '身份证正面',
     IDCARDBACK: '身份证反面',
     IDCARDNUMBER: '身份证号',
-
-
-
+    VERIFY_STATUS: '认证状态',
+    VERIFY_STATUS_1: '未认证',
+    VERIFY_STATUS_2: '认证审核中',
+    VERIFY_STATUS_3: '驳回',
+    VERIFY_STATUS_4: '通过',
 }
