@@ -561,7 +561,8 @@ export default {
     LUCKY_AMOUNT: '中奖金额',
     LUCKY_OPTIONS: '中奖选项',
     CREATE_LUCKY_RECORD: '创建中奖记录',
-
     REVIEW_ID: '审核ID',
-    LUCKY_ID: '抽奖ID',
+    LUCKY_ID: '奖项ID',
+    LUCKIED: '已抽奖',
+    UNLUCKY: '待抽奖',
 }

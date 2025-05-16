@@ -204,6 +204,10 @@ export default {
     },
     computed: {
         formItems() {
+            const statusOptions = [
+                { label: this.$i18n.t("UNLUCKY"), value: 1 },
+                { label: this.$i18n.t("LUCKIED"), value: 2 },
+            ];
             // 构建搜索表单
             return [
                 {
@@ -213,22 +217,16 @@ export default {
                     maxlength: 11,
                 },
                 {
-                    title: this.$i18n.t("ACCOUNT"),
+                    title: this.$i18n.t("MEMBER_ID"),
                     type: "input",
-                    key: "account",
-                    maxlength: 50,
+                    key: "user_id",
+                    maxlength: 11,
                 },
                 {
-                    title: this.$i18n.t("NICKNAME"),
-                    type: "input",
-                    key: "nickname",
-                    maxlength: 50,
-                },
-                {
-                    title: this.$i18n.t("PHONE"),
-                    type: "input",
-                    key: "phone",
-                    maxlength: 20,
+                    title: this.$i18n.t("STATUS"),
+                    type: "select",
+                    key: "status",
+                    options: statusOptions,
                 },
             ];
         },

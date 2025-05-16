@@ -303,18 +303,6 @@ export default {
     },
     computed: {
         formItems() {
-            // 用户状态筛选
-            const statusOptions = [
-                { label: this.$i18n.t("NORMAL"), value: 1 },
-                { label: this.$i18n.t("DISABLED"), value: 0 },
-            ];
-            
-            const userLevel = [
-                { label: this.$i18n.t("USER_LEVEL_0"), value: "" },
-                { label: this.$i18n.t("USER_LEVEL_1"), value: 1 },
-                { label: this.$i18n.t("USER_LEVEL_2"), value: 2 },
-                { label: this.$i18n.t("USER_LEVEL_3"), value: 3 },
-            ];
              const verifyStatus = [
                 { label: this.$i18n.t("VERIFY_STATUS_1"), value: 1 },
                 { label: this.$i18n.t("VERIFY_STATUS_2"), value: 2 },
@@ -329,24 +317,12 @@ export default {
                     key: "id",
                     maxlength: 11,
                 },
-                {
-                    title: this.$i18n.t("USER_LEVEL"),
-                    type: "select",
-                    key: "user_level",
-                    options: userLevel,
-                },
+               
                  {
                     title: this.$i18n.t("VERIFY_STATUS"),
                     type: "select",
                     key: "verify_status",
                     options: verifyStatus,
-                },
-              
-                {
-                    title: this.$i18n.t("MEMBER_LEVEL"),
-                    type: "select_level",
-                    key: "level",
-                    options: this.userLevelList,
                 },
                 {
                     title: this.$i18n.t("NICKNAME"),
@@ -362,13 +338,7 @@ export default {
                 },
             ];
         },
-        isShowDivider() {
-            const { meta } = this.$store.getters.router;
-            return (
-                meta.actions.indexOf("update") > -1 &&
-                meta.actions.indexOf("delete") > -1
-            );
-        },
+    
     },
     methods: {
         handleDownload() {
