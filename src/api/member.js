@@ -152,3 +152,31 @@ export function verifyRefuse (id) {
         method: 'put'
     })
 }
+
+export function getDraw (params) {
+    return axios({
+        url: 'user_draw',
+        method: 'get',
+        params
+    })
+}
+export function addDraw (data) {
+    return axios({
+        url: 'user_draw',
+        method: 'post',
+        data
+    })
+}
+export function deleteDraw (id) {
+    return axios({
+        url: `user_draw/${id}`,
+        method: 'delete'
+    })
+}
+
+export function getDrawOptions () {
+    return axios({
+        url: 'user_draw/options',
+        method: 'get'
+    })
+}
