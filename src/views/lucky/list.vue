@@ -39,7 +39,7 @@
                 <el-table-column
                     align="center"
                     sortable
-                    prop="award_id"
+                    prop="id"
                     label="ID"
                     :width="100"
                     fixed="left"
@@ -77,11 +77,18 @@
                     :width="400"
                 >
                     <template slot-scope="scope">
-                        <span v-auth="'edit'">
+                        <span v-if="scope.row.is_transfer == 1">
                             <el-link
                                 icon="el-icon-delete"
                                 @click="onDelete(scope.row)"
                                 >{{ $i18n.t("DELETE") }}</el-link
+                            >
+                        </span>
+                        <span v-if="scope.row.is_transfer == 0">
+                            <el-link
+                                icon="el-icon-sort"
+                                @click="onTransfer(scope.row)"
+                                >{{ $i18n.t("TRANSFER") }}</el-link
                             >
                         </span>
                     </template>
@@ -157,7 +164,7 @@
 </style>
 <script>
 import SearchForm from "@/components/SearchForm";
-import { getDraw, deleteDraw } from "@/api/member";
+import { getDraw, deleteDraw, drawTransfer } from "@/api/member";
 import FormModal from "@/components/lucky/FormModal";
 import RechargeFormModal from "@/components/member/RechargeFormModal";
 import { PAGES_SIZE } from "@/config/constants";
@@ -210,12 +217,6 @@ export default {
             ];
             // 构建搜索表单
             return [
-                {
-                    title: this.$i18n.t("LUCKY_ID"),
-                    type: "input",
-                    key: "id",
-                    maxlength: 11,
-                },
                 {
                     title: this.$i18n.t("MEMBER_ID"),
                     type: "input",
@@ -315,8 +316,18 @@ export default {
             this.mdl = Object.assign({}, {});
             this.drawer = true;
         },
+        onTransfer(row) {
+            this.$confirm(this.$i18n.t("CONFIRM_TRANSFER_TIP"))
+                .then((res) => {
+                    drawTransfer(row.id).then(() => {
+                        this.$Message.success(this.$i18n.t("HANDLE_SUCCESS"));
+                        this.fetch();
+                    });
+                })
+                .catch((_) => {});
+        },
         onDelete(row) {
-            this.$confirm("确认删除？")
+            this.$confirm(this.$i18n.t("CONFIRM_DELETE_TIP"))
                 .then((res) => {
                     deleteDraw(row.id).then(() => {
                         this.$Message.success(this.$i18n.t("HANDLE_SUCCESS"));

@@ -5,7 +5,7 @@
 
         <!-- 表格区域 -->
         <div class="table-body">
-            <!-- 左上角按钮 -->
+            <!-- 左上角按钮 --> 
             <div class="table-left-top">
                 <el-button v-auth="'add'" type="primary" icon="el-icon-plus" @click="onAdd">{{ $i18n.t('CREATE_USER_LEVEL') }}</el-button>
                 <el-button v-auth="'delete'" type="danger" icon="el-icon-delete" :disabled="checkedIds.length === 0" @click="onDelete(checkedIds)">{{ $i18n.t('DELETE') }}</el-button>
@@ -263,6 +263,7 @@
                     icon: row.icon,
                     level: row.level,
                     price: row.price,
+                    low_monthly: row.low_monthly,
                     task_val: row.task_val,
                     withdrawal_times: row.withdrawal_times,
                     withdrawal_all_times: row.withdrawal_all_times,

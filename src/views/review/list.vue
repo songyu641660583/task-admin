@@ -125,15 +125,18 @@
                     :min-width="100"
                 >
                     <template slot-scope="scope">
-                        <el-tag v-if="scope.row.status === 1" type="success">{{
-                            $i18n.t("NORMAL")
+                        <el-tag v-if="scope.row.verify_status === 4" type="success">{{
+                            $i18n.t("VERIFY_STATUS_4")
                         }}</el-tag>
-                        <el-tag
-                            v-else-if="scope.row.status === 0"
-                            type="danger"
-                            >{{ $i18n.t("DISABLED") }}</el-tag
-                        >
-                        <el-tag v-else>-</el-tag>
+                        <el-tag v-if="scope.row.verify_status === 3" type="danger">{{
+                            $i18n.t("VERIFY_STATUS_3")
+                        }}</el-tag>
+                            <el-tag v-if="scope.row.verify_status === 2" type="warning">{{
+                            $i18n.t("VERIFY_STATUS_2")
+                        }}</el-tag>
+                            <el-tag v-if="scope.row.verify_status === 1" type="info">{{
+                            $i18n.t("VERIFY_STATUS_1")
+                        }}</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -151,14 +154,14 @@
                     :width="400"
                 >
                     <template slot-scope="scope">
-                        <span v-auth="'edit'">
+                        <span>
                             <el-link
                                 icon="el-icon-check"
                                 @click="onPass(scope.row)"
                                 >{{ $i18n.t("PASS") }}</el-link
                             >
                         </span>
-                        <span v-auth="'edit'">
+                        <span>
                             <el-divider direction="vertical"></el-divider>
                             <el-link
                                 icon="el-icon-close"

@@ -565,4 +565,7 @@ export default {
     LUCKY_ID: '奖项ID',
     LUCKIED: '已抽奖',
     UNLUCKY: '待抽奖',
+    LEVEL_WITHDRAWAL_MONEH_MONEY: '每月至少收入',
+    CONFIRM_TRANSFER_TIP: '确认划转到钱包吗？',
+    TRANSFER: '划转到钱包',
 }

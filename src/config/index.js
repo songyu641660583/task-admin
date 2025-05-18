@@ -1,6 +1,7 @@
 export default {
     // oss地址
-    staticUrl: 'https://code-demo-oss.oss-cn-hongkong.aliyuncs.com/'
+    // staticUrl: 'https://code-demo-oss.oss-cn-hongkong.aliyuncs.com/'
+    staticUrl: 'https://worldex.oss-cn-hongkong.aliyuncs.com/'
 }
 // 默认系统名称
 export const siteTitle = ''

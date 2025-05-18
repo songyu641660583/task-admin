@@ -180,3 +180,10 @@ export function getDrawOptions () {
         method: 'get'
     })
 }
+
+export function drawTransfer (id) {
+    return axios({
+        url: `/user_draw/transfer/${id}`,
+        method: 'put'
+    })
+}

@@ -47,10 +47,10 @@ Vue.use(Fragment.Plugin)
 Vue.prototype.$indexPage = indexPage
 Vue.prototype.$loginPage = loginPage
 Vue.filter('formatPrice', (val) => {
-    return  Number(val).toFixed(2)+"  ₫"
+    return  Number(val).toFixed(2)+"  $"
 })
 Vue.filter('formatPriceTag', (val) => {
-    return  " ₫"
+    return  " $"
 })
 Vue.use(directives)
 /* eslint-disable no-new */

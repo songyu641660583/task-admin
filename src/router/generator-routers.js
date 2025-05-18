@@ -179,99 +179,10 @@ export const generator = (routerMap, parent) => routerMap.map((item) => {
 
 export const generatorDynamicRouter = () => new Promise((resolve, reject) => {
     loginService.getMenu().then((res) => {
-        console.log("resresres", res)
         const { result } = res
         const menuNav = []
         const childrenNav = []
-        let customData = [
-                     {
-             "id": 331,
-            "parent_id": 0,
-            "name": "REVIEW",
-            "icon": "el-icon-user-solid",
-            "type": 1,
-            "path": "review",
-            "component": "",
-            "left_show": true,
-            "top_show": false,
-            "target": 1,
-            "status": 1,
-            "sort": 0,
-            "is_system": false
-        },
-                {
-            "id": 332,
-            "parent_id": 331,
-            "name": "REVIEW_LIST",
-            "icon": "el-icon-custom-plus-listview",
-            "type": 1,
-            "path": "list",
-            "component": "review/list",
-            "left_show": true,
-            "top_show": false,
-            "target": 1,
-            "status": 1,
-            "sort": 0,
-            "is_system": false,
-            "actions": [
-                "recharge",
-                "enable",
-                "disable",
-                "balance",
-                "team",
-                "add",
-                "set_up_agent",
-                "cancel_agent",
-                "edit",
-                "export"
-            ]
-        },
-                {
-             "id": 231,
-            "parent_id": 0,
-            "name": "LUCKY",
-            "icon": "el-icon-user-solid",
-            "type": 1,
-            "path": "lucky",
-            "component": "",
-            "left_show": true,
-            "top_show": false,
-            "target": 1,
-            "status": 1,
-            "sort": 0,
-            "is_system": false
-        },
-                {
-            "id": 232,
-            "parent_id": 231,
-            "name": "LUCKY_LIST",
-            "icon": "el-icon-custom-plus-listview",
-            "type": 1,
-            "path": "list",
-            "component": "lucky/list",
-            "left_show": true,
-            "top_show": false,
-            "target": 1,
-            "status": 1,
-            "sort": 0,
-            "is_system": false,
-            "actions": [
-                "recharge",
-                "enable",
-                "disable",
-                "balance",
-                "team",
-                "add",
-                "set_up_agent",
-                "cancel_agent",
-                "edit",
-                "export"
-            ]
-        }
-        ]
-          
-        
-        listToTree([...result, ...customData], childrenNav, 0)
+        listToTree([...result], childrenNav, 0)
         rootRouter.children = childrenNav
         menuNav.push(rootRouter)
         const routers = generator(menuNav)

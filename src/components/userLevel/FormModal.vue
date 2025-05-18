@@ -35,6 +35,9 @@
             <el-form-item :label="$i18n.t('LEVEL_TASK_VAL')" required :error="errors.task_val">
                 <el-input-number v-model="mdl.task_val" controls-position="right" :min="0" :placeholder="$i18n.t('PLEASE_INPUT', { value: $i18n.t('LEVEL_TASK_VAL') })" :precision="2" style="width: 200px"></el-input-number>   {{|formatPriceTag}}
             </el-form-item>
+             <el-form-item :label="$i18n.t('LEVEL_WITHDRAWAL_MONEH_MONEY')" required :error="errors.low_monthly">
+                <el-input-number v-model="mdl.low_monthly" controls-position="right" :min="0" :placeholder="$i18n.t('PLEASE_INPUT', { value: $i18n.t('LEVEL_WITHDRAWAL_MONEH_MONEY') })" :precision="2" style="width: 200px"></el-input-number>   {{|formatPriceTag}}
+            </el-form-item>
             <el-form-item :label="$i18n.t('LEVEL_WITHDRAWAL_TIMES')" required :error="errors.withdrawal_times">
                 <el-input-number v-model="mdl.withdrawal_times" controls-position="right" :min="0" :placeholder="$i18n.t('PLEASE_INPUT', { value: $i18n.t('LEVEL_TASK_VAL') })" :precision="0" style="width: 200px"></el-input-number>
             </el-form-item>
