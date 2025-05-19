@@ -154,14 +154,14 @@
                     :width="400"
                 >
                     <template slot-scope="scope">
-                        <span>
+                        <span v-if="scope.row.verify_status === 2">
                             <el-link
                                 icon="el-icon-check"
                                 @click="onPass(scope.row)"
                                 >{{ $i18n.t("PASS") }}</el-link
                             >
                         </span>
-                        <span>
+                        <span v-if="scope.row.verify_status === 2">
                             <el-divider direction="vertical"></el-divider>
                             <el-link
                                 icon="el-icon-close"

@@ -13,18 +13,17 @@
             <!-- 左上角按钮 -->
             <div class="table-left-top">
                 <el-button
-                    v-auth="'add'"
                     type="primary"
                     icon="el-icon-plus"
                     @click="onAdd"
                     >{{ $i18n.t("CREATE_LUCKY_RECORD") }}</el-button
                 >
-                <el-button
+                <!-- <el-button
                     v-auth="'export'"
                     type="primary"
                     @click="handleDownload"
                     >{{ $i18n.t("EXPORT") }}</el-button
-                >
+                > -->
             </div>
 
             <!-- 表格 -->
@@ -56,6 +55,12 @@
                     :label="$i18n.t('NICKNAME')"
                     :min-width="150"
                 ></el-table-column>
+                 <el-table-column
+                    align="center"
+                    prop="user_id"
+                    :label="$i18n.t('MEMBER_ID')"
+                    :min-width="150"
+                ></el-table-column>
                 <el-table-column
                     align="center"
                     prop="phone"
@@ -77,14 +82,14 @@
                     :width="400"
                 >
                     <template slot-scope="scope">
-                        <span v-if="scope.row.is_transfer == 1">
+                        <span v-if="scope.row.status == 1">
                             <el-link
                                 icon="el-icon-delete"
                                 @click="onDelete(scope.row)"
                                 >{{ $i18n.t("DELETE") }}</el-link
                             >
                         </span>
-                        <span v-if="scope.row.is_transfer == 0">
+                        <span v-if="scope.row.is_transfer == 0 && scope.row.status == 2">
                             <el-link
                                 icon="el-icon-sort"
                                 @click="onTransfer(scope.row)"
