@@ -13,20 +13,9 @@
             <!-- 左上角按钮 -->
             <div class="table-left-top">
                 <el-button type="primary" icon="el-icon-plus" @click="onAdd">{{
-                    $i18n.t("CREATE_LUCKY_RECORD")
+                    $i18n.t("CREATE_TASK_NUM")
                 }}</el-button>
-                <el-button
-                    type="success"
-                    icon="el-icon-circle-check"
-                    @click="handleAllPass"
-                    >{{ $i18n.t("BATCH_TRANSFER") }}</el-button
-                >
-                <!-- <el-button
-                    v-auth="'export'"
-                    type="primary"
-                    @click="handleDownload"
-                    >{{ $i18n.t("EXPORT") }}</el-button
-                > -->
+               
             </div>
 
             <!-- 表格 -->
@@ -48,14 +37,14 @@
                 ></el-table-column>
                 <el-table-column
                     align="center"
-                    prop="amount"
-                    :label="$i18n.t('LUCKY_AMOUNT')"
+                    prop="num"
+                    :label="$i18n.t('TASK_NUM_VALUE')"
                     :min-width="150"
                 ></el-table-column>
                 <el-table-column
                     align="center"
-                    prop="nickname"
-                    :label="$i18n.t('NICKNAME')"
+                    prop="level"
+                    :label="$i18n.t('USER_LEVEL_TEXT')"
                     :min-width="150"
                 ></el-table-column>
                 <el-table-column
@@ -64,12 +53,7 @@
                     :label="$i18n.t('MEMBER_ID')"
                     :min-width="150"
                 ></el-table-column>
-                <el-table-column
-                    align="center"
-                    prop="phone"
-                    :label="$i18n.t('PHONE')"
-                    :min-width="150"
-                ></el-table-column>
+                
                 <el-table-column
                     align="center"
                     sortable
@@ -85,23 +69,15 @@
                     :width="400"
                 >
                     <template slot-scope="scope">
-                        <span v-if="scope.row.status == 1">
+                          <span>
+                            <el-link icon="el-icon-edit" @click="onEDit(scope.row)">{{ $i18n.t('EDIT') }}</el-link>
+                        </span>
+                        <span>
+                            <el-divider direction="vertical"></el-divider>
                             <el-link
                                 icon="el-icon-delete"
                                 @click="onDelete(scope.row)"
                                 >{{ $i18n.t("DELETE") }}</el-link
-                            >
-                        </span>
-                        <span
-                            v-if="
-                                scope.row.is_transfer == 0 &&
-                                scope.row.status == 2
-                            "
-                        >
-                            <el-link
-                                icon="el-icon-sort"
-                                @click="onTransfer(scope.row)"
-                                >{{ $i18n.t("TRANSFER") }}</el-link
                             >
                         </span>
                     </template>
@@ -177,19 +153,15 @@
 </style>
 <script>
 import SearchForm from "@/components/SearchForm";
-import { getDraw, deleteDraw, drawTransfer } from "@/api/member";
-import FormModal from "@/components/lucky/FormModal";
-import RechargeFormModal from "@/components/member/RechargeFormModal";
+import { getTashNum, deleteTashNum } from "@/api/member";
+import FormModal from "@/components/taskNum/FormModal";
 import { PAGES_SIZE } from "@/config/constants";
-import Team from "@/components/member/Team";
 import { userCsv } from "@/api/csv";
 
 export default {
     name: "user",
     components: {
         SearchForm,
-        RechargeFormModal,
-        Team,
         FormModal,
     },
     data() {
@@ -206,13 +178,6 @@ export default {
             loading: false,
             str_pid: null,
             drawer: false,
-            dialogTableVisible: false,
-            editBalanceVisible: false,
-            teamVisible: false,
-            effectiveTimeVisible: false,
-            changeParentVisible: false,
-            userMemberVisible: false,
-            userMemberIpVisible: false,
             exportVisible: false,
             mdl: {},
             checkedIds: [],
@@ -224,10 +189,7 @@ export default {
     },
     computed: {
         formItems() {
-            const statusOptions = [
-                { label: this.$i18n.t("UNLUCKY"), value: 1 },
-                { label: this.$i18n.t("LUCKIED"), value: 2 },
-            ];
+           
             // 构建搜索表单
             return [
                 {
@@ -235,13 +197,7 @@ export default {
                     type: "input",
                     key: "user_id",
                     maxlength: 11,
-                },
-                {
-                    title: this.$i18n.t("STATUS"),
-                    type: "select",
-                    key: "status",
-                    options: statusOptions,
-                },
+                }
             ];
         },
         isShowDivider() {
@@ -271,7 +227,7 @@ export default {
         // 从接口拉取数据
         fetch() {
             this.loading = true;
-            getDraw({
+            getTashNum({
                 ...this.params,
                 page: this.page.currentPage,
                 perPage: this.page.perPage,
@@ -279,13 +235,7 @@ export default {
                 .then((res) => {
                     // eslint-disable-next-line camelcase
                     const { data, last_page, total } = res.result;
-                    this.data = data.map((item) => {
-                        return {
-                            ...item,
-                            phone: item.user.phone || "",
-                            nickname: item.user.nickname || "",
-                        };
-                    });
+                    this.data = data
                     this.page.total = total;
                     // eslint-disable-next-line camelcase
                     this.page.pageCount = last_page;
@@ -313,53 +263,22 @@ export default {
         handleSelectionChange(rows) {
             this.checkedIds = rows.map((item) => item.id);
         },
-
-        onChangeParentId(row) {
-            this.mdl = Object.assign({}, row);
-            this.changeParentVisible = true;
-        },
-
-        onCheckUserMember(row) {
-            this.mdl = Object.assign({}, row);
-            this.userMemberVisible = true;
-        },
-
         // 添加
         onAdd() {
             this.mdl = Object.assign({}, {});
             this.drawer = true;
         },
-        handleAllPass() {
-            const optionsData = this.data.filter(
-                (item) => item.is_transfer == 0 && item.status == 2
-            );
-            if (optionsData.length === 0) {
-                this.$Message.warning(this.$i18n.t("NO_OPTIONS_VERIFY_STATUS"));
-                return;
-            }
-            optionsData.forEach((item, index) => {
-                drawTransfer(item.id).then(() => {
-                    if (index === optionsData.length - 1) {
-                        this.$Message.success(this.$i18n.t("HANDLE_SUCCESS"));
-                        this.fetch();
-                    }
-                });
-            });
-        },
-        onTransfer(row) {
-            this.$confirm(this.$i18n.t("CONFIRM_TRANSFER_TIP"))
-                .then((res) => {
-                    drawTransfer(row.id).then(() => {
-                        this.$Message.success(this.$i18n.t("HANDLE_SUCCESS"));
-                        this.fetch();
-                    });
-                })
-                .catch((_) => {});
+        // 修改
+        onEDit (row) {
+            this.mdl = Object.assign({}, row)
+            this.mdl.password = ''
+            this.mdl.trade_pass = ''
+            this.drawer = true
         },
         onDelete(row) {
             this.$confirm(this.$i18n.t("CONFIRM_DELETE_TIP"))
                 .then((res) => {
-                    deleteDraw(row.id).then(() => {
+                    deleteTashNum(row.id).then(() => {
                         this.$Message.success(this.$i18n.t("HANDLE_SUCCESS"));
                         this.fetch();
                     });

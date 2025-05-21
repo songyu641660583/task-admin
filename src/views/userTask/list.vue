@@ -55,6 +55,24 @@
                         {{ scope.row.amount }} {{|formatPriceTag}}
                     </template>
                 </el-table-column>
+                  <el-table-column
+                    prop="image"
+                    :min-width="150"
+                    :label="$i18n.t('USER_TASK_IMAGE')"
+                >
+                    <template slot-scope="scope">
+                        
+                        <el-image
+                            style="width: 130px; height: 80px"
+                            :src="configs.staticUrl + scope.row.image"
+                            :preview-src-list="[
+                                configs.staticUrl + scope.row.image,
+                            ]"
+                            fit="cover"
+                            v-if="scope.row.image"
+                        ></el-image>
+                    </template>
+                </el-table-column>
                 <el-table-column align="center" prop="status" :label="$i18n.t('STATUS')" :min-width="100">
                     <template slot-scope="scope">
                         <el-tag v-if="scope.row.status === 0" type="info">{{ $i18n.t('TASK_STATUS_0') }}</el-tag>
@@ -125,12 +143,14 @@
     import FormModal from '@/components/userTask/FormModal'
     import { enableTasks, disableTasks, deleteTasks } from '@/api/task'
     import { getUserTasks, auditUserTaskAll } from '@/api/userTask'
+    import configs from '@/config'
 
     export default {
         name: 'user_level',
         components: { SearchForm, FormModal },
         data () {
             return {
+                configs,
                 PAGES_SIZE,
                 params: {
                     type: 0

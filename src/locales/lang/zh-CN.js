@@ -10,6 +10,7 @@ export default {
         LUCKY_LIST: '抽奖列表',
         REVIEW: '审核管理',
         REVIEW_LIST: '审核列表',
+        TASK_NUM_LIST: '任务次数列表',
         CONFIG: '配置管理',
         GROUP: '用户组管理',
         USER: '用户管理',
@@ -17,7 +18,6 @@ export default {
         RESOURCE: '资源管理',
         MEMBER: '用户管理',
         MEMBER_LIST: '用户列表',
-        USER_LEVEL: '会员等级',
         USER_LEVEL_LIST: '会员等级列表',
         TASK: '任务管理',
         TASK_CATEGORY_LIST: '任务类别列表',
@@ -568,4 +568,11 @@ export default {
     LEVEL_WITHDRAWAL_MONEH_MONEY: '每月至少收入',
     CONFIRM_TRANSFER_TIP: '确认划转到钱包吗？',
     TRANSFER: '划转到钱包',
+    NO_OPTIONS_VERIFY_STATUS: '没有可操作的选项！',
+    BATCH_TRANSFER: '一键批量划转',
+    TASK_NUM_VALUE: '任务次数',
+    CREATE_TASK_NUM: '创建用户任务次数',
+    USER_LEVEL_ID: '会员等级ID',
+    USER_LEVEL_TEXT: '会员等级'
+
 }

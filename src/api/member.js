@@ -187,3 +187,33 @@ export function drawTransfer (id) {
         method: 'put'
     })
 }
+export function getTashNum (params) {
+    return axios({
+        url: 'user_level_task',
+        method: 'get',
+        params
+    })
+}
+
+export function addTashNum (data) {
+    return axios({
+        url: 'user_level_task',
+        method: 'post',
+        data
+    })
+}
+
+export function editTashNum (id, data) {
+    return axios({
+        url: 'user_level_task/' + id,
+        method: 'put',
+        data
+    })
+}
+
+export function deleteTashNum (id) {
+    return axios({
+        url: `user_level_task/${id}`,
+        method: 'delete'
+    })
+}

@@ -6,13 +6,20 @@
             :params="params"
             :on-submit="onSearch"
             :btn-loading="loading"
-        /> 
+        />
 
         <!-- 表格区域 -->
         <div class="table-body">
             <!-- 左上角按钮 -->
-            <!-- <div class="table-left-top">
+            <div class="table-left-top">
                 <el-button
+                    type="success"
+                    icon="el-icon-circle-check"
+                    @click="handleAllPass"
+                    >{{ $i18n.t("AUDIT_BATCH_PASS") }}</el-button
+                >
+
+                <!-- <el-button
                     v-auth="'add'"
                     type="primary"
                     icon="el-icon-plus"
@@ -24,8 +31,8 @@
                     type="primary"
                     @click="handleDownload"
                     >{{ $i18n.t("EXPORT") }}</el-button
-                >
-            </div> -->
+                > -->
+            </div>
 
             <!-- 表格 -->
             <el-table
@@ -36,7 +43,6 @@
                 v-loading="loading"
                 @selection-change="handleSelectionChange"
             >
-              
                 <el-table-column
                     sortable
                     prop="id"
@@ -84,7 +90,7 @@
                     :min-width="150"
                 ></el-table-column>
                 <el-table-column
-                  align="center"
+                    align="center"
                     prop="front_id_card"
                     :min-width="150"
                     :label="$i18n.t('IDCARDFRONT')"
@@ -101,7 +107,6 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-
                     prop="back_id_card"
                     :min-width="150"
                     :label="$i18n.t('IDCARDBACK')"
@@ -125,18 +130,26 @@
                     :min-width="100"
                 >
                     <template slot-scope="scope">
-                        <el-tag v-if="scope.row.verify_status === 4" type="success">{{
-                            $i18n.t("VERIFY_STATUS_4")
-                        }}</el-tag>
-                        <el-tag v-if="scope.row.verify_status === 3" type="danger">{{
-                            $i18n.t("VERIFY_STATUS_3")
-                        }}</el-tag>
-                            <el-tag v-if="scope.row.verify_status === 2" type="warning">{{
-                            $i18n.t("VERIFY_STATUS_2")
-                        }}</el-tag>
-                            <el-tag v-if="scope.row.verify_status === 1" type="info">{{
-                            $i18n.t("VERIFY_STATUS_1")
-                        }}</el-tag>
+                        <el-tag
+                            v-if="scope.row.verify_status === 4"
+                            type="success"
+                            >{{ $i18n.t("VERIFY_STATUS_4") }}</el-tag
+                        >
+                        <el-tag
+                            v-if="scope.row.verify_status === 3"
+                            type="danger"
+                            >{{ $i18n.t("VERIFY_STATUS_3") }}</el-tag
+                        >
+                        <el-tag
+                            v-if="scope.row.verify_status === 2"
+                            type="warning"
+                            >{{ $i18n.t("VERIFY_STATUS_2") }}</el-tag
+                        >
+                        <el-tag
+                            v-if="scope.row.verify_status === 1"
+                            type="info"
+                            >{{ $i18n.t("VERIFY_STATUS_1") }}</el-tag
+                        >
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -306,7 +319,7 @@ export default {
     },
     computed: {
         formItems() {
-             const verifyStatus = [
+            const verifyStatus = [
                 { label: this.$i18n.t("VERIFY_STATUS_1"), value: 1 },
                 { label: this.$i18n.t("VERIFY_STATUS_2"), value: 2 },
                 { label: this.$i18n.t("VERIFY_STATUS_3"), value: 3 },
@@ -320,8 +333,8 @@ export default {
                     key: "id",
                     maxlength: 11,
                 },
-               
-                 {
+
+                {
                     title: this.$i18n.t("VERIFY_STATUS"),
                     type: "select",
                     key: "verify_status",
@@ -341,7 +354,6 @@ export default {
                 },
             ];
         },
-    
     },
     methods: {
         handleDownload() {
@@ -425,15 +437,29 @@ export default {
             );
             this.drawer = true;
         },
-        onPass(row) {
+        handleAllPass() {
+            const optionsData = this.data.filter(
+                (item) => item.verify_status === 2
+            );
+            if (optionsData.length === 0) {
+                this.$Message.warning(this.$i18n.t("NO_OPTIONS_VERIFY_STATUS"));
+                return;
+            }
+            optionsData.forEach((item, index) => {
+                this.onPass(item, index === optionsData - 1);
+            });
+        },
+        onPass(row, showToast = true) {
             this.loading = true;
             verifyPass(row.id)
                 .then((res) => {
-                    this.page.currentPage = 1
-                   this.$Message.success(this.$i18n.t('HANDLE_SUCCESS'))
-                    setTimeout(() => {
-                        this.fetch()
-                    }, 500)
+                    this.page.currentPage = 1;
+                    if (showToast) {
+                        this.$Message.success(this.$i18n.t("HANDLE_SUCCESS"));
+                        setTimeout(() => {
+                            this.fetch();
+                        }, 500);
+                    }
                 })
                 .finally(() => {
                     this.loading = false;
@@ -443,11 +469,11 @@ export default {
             this.loading = true;
             verifyRefuse(row.id)
                 .then((res) => {
-                   this.$Message.success(this.$i18n.t('HANDLE_SUCCESS'))
+                    this.$Message.success(this.$i18n.t("HANDLE_SUCCESS"));
                     setTimeout(() => {
-                        this.page.currentPage = 1
-                        this.fetch()
-                    }, 500)
+                        this.page.currentPage = 1;
+                        this.fetch();
+                    }, 500);
                 })
                 .finally(() => {
                     this.loading = false;

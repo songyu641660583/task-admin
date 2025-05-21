@@ -18,6 +18,8 @@ const constantRouterComponents = {
     'review/list': () => import('@/views/review/list'),
     // 抽奖列表
     'lucky/list': () => import('@/views/lucky/list'),
+    // 任务次数列表
+    'task_num/list': () => import('@/views/member/taskNumList'),
     // 会员列表
     'member/list': () => import('@/views/member/list'),
     // 会员银行列表
