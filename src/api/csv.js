@@ -35,3 +35,9 @@ export function onlineRechargeCsv () {
         method: 'get'
     })
 }
+export function downloadFile (data) {
+    return axios({
+        url: '/csv/download?filename=' + data,
+        method: 'get'
+    })
+}

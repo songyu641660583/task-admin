@@ -573,6 +573,7 @@ export default {
     TASK_NUM_VALUE: '任务次数',
     CREATE_TASK_NUM: '创建用户任务次数',
     USER_LEVEL_ID: '会员等级ID',
-    USER_LEVEL_TEXT: '会员等级'
+    USER_LEVEL_TEXT: '会员等级',
+    DOWNLOAD_TEXT: '下载'
 
 }

@@ -31,6 +31,11 @@ service.interceptors.request.use((config) => {
 
 service.interceptors.response.use((response) => {
     const result = response.data
+    console.log('response', response)
+    if (!result.code) {
+       return result
+    }
+
     if (result.code !== 200) {
         if (result.code === 401) {
             store.dispatch('Logout').then(() => {
