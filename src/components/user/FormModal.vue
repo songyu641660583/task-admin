@@ -19,6 +19,9 @@
             <el-form-item :label="$i18n.t('PHONE_NUMBER')" required :error="errors.phone">
                 <el-input v-model="mdl.phone" :placeholder="$i18n.t('PLEASE_INPUT', { value: $i18n.t('PHONE_NUMBER') })"></el-input>
             </el-form-item>
+            <el-form-item :label="$i18n.t('USERNAMEID')" :error="errors.member_id">
+                <el-input v-model="mdl.member_id" :placeholder="$i18n.t('PLEASE_INPUT', { value: $i18n.t('USERNAMEID') })"></el-input>
+            </el-form-item>
             <el-form-item :label="$i18n.t('NICKNAME')" :error="errors.nickname">
                 <el-input v-model="mdl.nickname" :placeholder="$i18n.t('PLEASE_INPUT', { value: $i18n.t('NICKNAME') })"></el-input>
             </el-form-item>
