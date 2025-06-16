@@ -284,7 +284,7 @@ export default {
     },
     data() {
         return {
-            domain: "https://worldex.oss-cn-hongkong.aliyuncs.com/",
+            domain: "https://jcrn.oss-us-west-1.aliyuncs.com/",
             PAGES_SIZE,
             params: {},
             data: [],
