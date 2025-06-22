@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-loading="loading">
         <!-- 搜索组件 -->
         <search-form
             :items="formItems"
@@ -19,6 +19,7 @@
                     type="success"
                     icon="el-icon-circle-check"
                     @click="handleAllPass"
+                    v-loading="loading"
                     >{{ $i18n.t("BATCH_TRANSFER") }}</el-button
                 >
                 <!-- <el-button
@@ -336,12 +337,16 @@ export default {
             if (optionsData.length === 0) {
                 this.$Message.warning(this.$i18n.t("NO_OPTIONS_VERIFY_STATUS"));
                 return;
-            }
+            } 
+            this.loading = true
             optionsData.forEach((item, index) => {
                 drawTransfer(item.id).then(() => {
                     if (index === optionsData.length - 1) {
-                        this.$Message.success(this.$i18n.t("HANDLE_SUCCESS"));
-                        this.fetch();
+                         setTimeout(() => {
+                            this.fetch()
+                            this.loading = false
+                            this.$Message.success(this.$i18n.t('HANDLE_SUCCESS'))
+                        }, 2000)
                     }
                 });
             });

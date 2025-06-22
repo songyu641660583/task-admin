@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-loading="loading">
         <el-tabs v-model="activeType" type="card" @tab-click="handleClick">
             <el-tab-pane :label="$i18n.t('ALL') + '(' + total_count + ')'" name="0"></el-tab-pane>
             <el-tab-pane :label="$i18n.t('TASK_STATUS_0') + '(' + progress_count + ')'" name="1"></el-tab-pane>
@@ -14,14 +14,14 @@
         <div class="table-body">
             <!-- 左上角按钮 -->
             <div class="table-left-top">
-                <el-button v-auth="'enable'" type="success" icon="el-icon-circle-check" :disabled="checkedIds.length === 0" @click="onEnable()">{{ $i18n.t('ENABLE') }}</el-button>
-                <el-button v-auth="'disable'" type="warning" icon="el-icon-custom-disable" :disabled="checkedIds.length === 0" @click="onDisable()">{{ $i18n.t('DISABLE') }}</el-button>
-                <el-button v-auth="'delete'" type="danger" icon="el-icon-delete" :disabled="checkedIds.length === 0" @click="onDelete(checkedIds)">{{ $i18n.t('DELETE') }}</el-button>
-                <el-button v-auth="'audit_batch_pass'" type="success" icon="el-icon-circle-check" @click="onAuditUserTaskAll()">{{ $i18n.t('AUDIT_BATCH_PASS') }}</el-button>
+                <el-button :loading="loading" v-auth="'enable'" type="success" icon="el-icon-circle-check" :disabled="checkedIds.length === 0" @click="onEnable()">{{ $i18n.t('ENABLE') }}</el-button>
+                <el-button :loading="loading" v-auth="'disable'" type="warning" icon="el-icon-custom-disable" :disabled="checkedIds.length === 0" @click="onDisable()">{{ $i18n.t('DISABLE') }}</el-button>
+                <el-button :loading="loading" v-auth="'delete'" type="danger" icon="el-icon-delete" :disabled="checkedIds.length === 0" @click="onDelete(checkedIds)">{{ $i18n.t('DELETE') }}</el-button>
+                <el-button :loading="loading" v-auth="'audit_batch_pass'" type="success" icon="el-icon-circle-check" @click="onAuditUserTaskAll()">{{ $i18n.t('AUDIT_BATCH_PASS') }}</el-button>
             </div>
 
             <!-- 表格 -->
-            <el-table border style="width: 100%;" stripe :data="data" v-loading="loading">
+            <el-table border style="width: 100%;" stripe :data="data">
                 <el-table-column align="center" type="expand" :label="$i18n.t('USER_TASK_INFO')"  fixed="left" :width="50">
                     <template slot-scope="props">
                         <el-form label-position="left" inline class="demo-table-expand">
@@ -144,6 +144,7 @@
     import { enableTasks, disableTasks, deleteTasks } from '@/api/task'
     import { getUserTasks, auditUserTaskAll } from '@/api/userTask'
     import configs from '@/config'
+import { set } from 'vue'
 
     export default {
         name: 'user_level',
@@ -294,8 +295,13 @@
                 this.loading = true
                 auditUserTaskAll().then(() => {
                     this.$Message.success(this.$i18n.t('AUDIT_BATCH_PASS_SUCCESS'))
-                    this.fetch()
+                    setTimeout(() => {
+                        this.fetch()
+                        this.loading = false
+                        this.$Message.success(this.$i18n.t('HANDLE_SUCCESS'))
+                    }, 2000)
                 }).catch(() => {
+                    this.loading = false
                     this.fetch()
                 })
             }

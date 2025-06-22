@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-loading="loading">
         <!-- 搜索组件 -->
         <search-form
             :items="formItems"
@@ -16,6 +16,7 @@
                     type="success"
                     icon="el-icon-circle-check"
                     @click="handleAllPass"
+                     v-loading="loading"
                     >{{ $i18n.t("AUDIT_BATCH_PASS") }}</el-button
                 >
 
@@ -445,6 +446,7 @@ export default {
                 this.$Message.warning(this.$i18n.t("NO_OPTIONS_VERIFY_STATUS"));
                 return;
             }
+            this.loading = true
             optionsData.forEach((item, index) => {
                 this.onPass(item, index === optionsData - 1);
             });
@@ -455,10 +457,11 @@ export default {
                 .then((res) => {
                     this.page.currentPage = 1;
                     if (showToast) {
-                        this.$Message.success(this.$i18n.t("HANDLE_SUCCESS"));
                         setTimeout(() => {
-                            this.fetch();
-                        }, 500);
+                            this.fetch()
+                            this.loading = false
+                            this.$Message.success(this.$i18n.t('HANDLE_SUCCESS'))
+                        }, 2000)
                     }
                 })
                 .finally(() => {
