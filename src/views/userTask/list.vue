@@ -211,6 +211,7 @@ import { set } from 'vue'
                 this.loading = true
                 getUserTasks({ ...this.params, page: this.page.currentPage, perPage: this.page.perPage }).then((res) => {
                     // eslint-disable-next-line camelcase
+                    console.log('res.result', res.result)
                     const { data, last_page, total, progress_count, audit_count, approved_count, cancelled_count } = res.result
                     this.data = data
                     this.page.total = total

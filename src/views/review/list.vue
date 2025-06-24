@@ -255,6 +255,7 @@
 }
 </style>
 <script>
+import configs from '@/config'
 import SearchForm from "@/components/SearchForm";
 import { getVerify, verifyRefuse, verifyPass } from "@/api/member";
 import FormModal from "@/components/member/FormModal";
@@ -285,7 +286,7 @@ export default {
     },
     data() {
         return {
-            domain: "https://jcrn.oss-us-west-1.aliyuncs.com/",
+            domain: configs.staticUrl,
             PAGES_SIZE,
             params: {},
             data: [],
