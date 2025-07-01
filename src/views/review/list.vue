@@ -342,6 +342,7 @@ export default {
                     key: "verify_status",
                     options: verifyStatus,
                 },
+                { title: this.$i18n.t('PARENT_DATA'), type: 'input', key: 'parent_id', maxlength: 11 },
                 {
                     title: this.$i18n.t("NICKNAME"),
                     type: "input",

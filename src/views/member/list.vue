@@ -82,7 +82,11 @@
                         <span>{{ scope.row.balance }} {{|formatPriceTag}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" prop="ip" label="IP" :min-width="100" ></el-table-column>
+                <el-table-column align="center" prop="ip" label="IP" :min-width="200" >
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.ip }}{{ scope.row.ip_country ? `(${scope.row.ip_country})` : '' }}</span>
+                    </template>
+                </el-table-column>
 
                 <el-table-column align="center" prop="level_name" :label="$i18n.t('LOGIN_IP')" :min-width="120">
                     <template slot-scope="scope">
