@@ -575,6 +575,7 @@ export default {
     USER_LEVEL_ID: '会员等级ID',
     USER_LEVEL_TEXT: '会员等级',
     DOWNLOAD_TEXT: '下载',
-    USERNAMEID: '绑定用户ID'
+    USERNAMEID: '绑定用户ID',
+    BATCH_REJECTED: '批量拒绝'
 
 }

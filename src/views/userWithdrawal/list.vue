@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-loading="loading">
         <el-tabs v-model="activeType" type="card" @tab-click="handleClick">
             <el-tab-pane :label="$i18n.t('ALL') + '(' + total_count + ')'" name="3"></el-tab-pane>
             <el-tab-pane :label="$i18n.t('WITHDRAWAL_STATUS_0') + '(' + audit_count + ')'" name="0"></el-tab-pane>
@@ -15,6 +15,7 @@
             <div class="table-left-top">
                 <!--                <el-button  type="primary" icon="el-icon-plus" @click="handleDownload">{{ $i18n.t('CREATE_USER_LEVEL') }}</el-button>-->
                 <el-button  v-auth="'export'" type="primary"  @click="handleDownload">{{ $i18n.t('EXPORT') }}</el-button>
+                <el-button type="primary"  v-loading="loading"  @click="handleRejected">{{ $i18n.t('BATCH_REJECTED') }}</el-button>
             </div>
             <!-- 表格 -->
             <el-table border style="width: 100%;" stripe :data="data" v-loading="loading">
@@ -122,7 +123,7 @@
     import SearchForm from '@/components/SearchForm'
     import { PAGES_SIZE } from '@/config/constants'
     import FormModal from '@/components/userWithdrawal/FormModal'
-    import { getUserWithdrawalList } from '@/api/userWithdrawal'
+    import { getUserWithdrawalList, auditUserWithdrawal } from '@/api/userWithdrawal'
     import { getCountryList } from '@/api/country'
     import { withdrawalCsv } from '@/api/csv'
 
@@ -198,6 +199,33 @@
             handleDownload () {
                 withdrawalCsv().then(() => {
                     this.$Message.success(this.$i18n.t('HANDLE_SUCCESS'))
+                })
+            },
+            handleRejected () {
+                const rejectData = this.data.filter(item => (item.status === 0))
+                if (rejectData.length === 0) {
+                    this.$Message.warning(this.$i18n.t('NO_OPTIONS_VERIFY_STATUS'))
+                    return
+                }
+                this.loading = true
+                rejectData.forEach((item, index) => {
+                    this.onUnpass(item, index === rejectData.length - 1)
+                })
+            },
+            onUnpass (row, showToast = true) {
+                auditUserWithdrawal({
+                    ...row,
+                    status: 2, // 拒绝
+                    df_status: 0, // 代付方式
+                    remark: ''
+                }).then(() => {
+                    if (showToast) {
+                        setTimeout(() => {
+                            this.fetch()
+                            this.loading = false
+                            this.$Message.success(this.$i18n.t('HANDLE_SUCCESS'))
+                        }, 2000)
+                    }
                 })
             },
             // 搜索按钮
